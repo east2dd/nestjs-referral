@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import { UserReferralLinkDto } from './dto/user.referral-link.dto';
 
 @Injectable()
 export class UserService {
@@ -11,7 +10,7 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  find(id: string): Promise<User> {
+  find(id: number): Promise<User> {
     return this.userRepository.findOne(id);
   }
 
@@ -19,12 +18,9 @@ export class UserService {
     return this.userRepository.findOne({ email: email });
   }
 
-  getReferralUrl(id: number): object {
-    const dto = new UserReferralLinkDto()
+  getReferralToken(id: number): string {
     const token = Buffer.from(id.toString()).toString('base64')
 
-    Object.assign(dto, { token })
-
-    return dto
+    return token
   }
 }

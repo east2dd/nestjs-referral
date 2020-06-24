@@ -75,6 +75,7 @@ describe('AuthController', () => {
     describe('When user is not present', () => {
       let authLoginServiceSpy
       let authRegisterServiceSpy
+      let authProcessReferralServiceSpy
 
       beforeEach(()=>{
         authLoginServiceSpy = jest
@@ -84,16 +85,49 @@ describe('AuthController', () => {
         authRegisterServiceSpy = jest
           .spyOn(authService, 'register')
           .mockResolvedValue(mockUserObject)
+        
+        authProcessReferralServiceSpy = jest
+          .spyOn(authService, 'processReferral')
+          .mockResolvedValue(true)
       })
 
       it('should return auth token', async () => {
-
         await expect(controller.register(registerDto)).resolves.toEqual(
           mockTokenObject,
         )
   
         expect(authRegisterServiceSpy).toHaveBeenCalledTimes(1)
         expect(authLoginServiceSpy).toHaveBeenCalledTimes(1)
+      })
+
+      describe('And referralToken is present', () => {
+        beforeEach(() => {
+          registerDto.referralToken = "xxxx"
+        })
+        it('should process referral', async () => {
+          await expect(controller.register(registerDto)).resolves.toEqual(
+            mockTokenObject,
+          )
+    
+          expect(authRegisterServiceSpy).toHaveBeenCalledTimes(1)
+          expect(authProcessReferralServiceSpy).toHaveBeenCalledTimes(1)
+          expect(authLoginServiceSpy).toHaveBeenCalledTimes(1)
+        })
+      })
+
+      describe('And referralToken is blank', () => {
+        beforeEach(() => {
+          registerDto.referralToken = ""
+        })
+        it('should not process referral', async () => {
+          await expect(controller.register(registerDto)).resolves.toEqual(
+            mockTokenObject,
+          )
+    
+          expect(authRegisterServiceSpy).toHaveBeenCalledTimes(1)
+          expect(authProcessReferralServiceSpy).toHaveBeenCalledTimes(0)
+          expect(authLoginServiceSpy).toHaveBeenCalledTimes(1)
+        })
       })
     })
   })

@@ -10,19 +10,35 @@ export default class AuthProcessReferralService
 {
   constructor(private userRepository: Repository<User>) {}
 
-  async call(user: User): Promise<boolean> {
-    if (!user.id) return false
+  async call(user: User, referralToken: string): Promise<boolean> {
+    if (!referralToken) return false
+    user.referrerId = this.getReferralIdFromToken(referralToken)
 
     const referrer = await this.fetchUser(user.referrerId)
 
     if (referrer) {
       await this.processReferrer(referrer)
       await this.processReferee(user)
-    }
 
-    return true
+      return true
+    }
+  
+    return false
   }
 
+  async updateUser(user) {
+    await this.userRepository.save(user)
+  }
+
+  async fetchUser(id: number) {
+    return await this.userRepository.findOne({ id })
+  }
+
+  protected getReferralIdFromToken(token: string): number {
+    const referrerId = Buffer.from(token, 'base64').toString()
+
+    return parseInt(referrerId)
+  }
   protected async processReferrer(user: User) {
     this.increaseReferralCount(user)
     this.addReferralAmountPerStackCount(user)
@@ -59,13 +75,5 @@ export default class AuthProcessReferralService
     const balance = user.balance + REFERRAL_AMOUNT
 
     Object.assign(user, { balance })
-  }
-
-  protected async updateUser(user) {
-    await this.userRepository.save(user)
-  }
-
-  protected async fetchUser(id: number) {
-    return await this.userRepository.findOne({ id })
   }
 }

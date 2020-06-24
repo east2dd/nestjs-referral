@@ -1,10 +1,10 @@
 import {
   IsString,
   IsEmail,
-  IsNotEmpty,
-  IsNumber,
+  IsNotEmpty
 } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
+import { User } from '../../user/user.entity';
 
 export class AuthRegisterDto {
   @ApiProperty({
@@ -41,9 +41,15 @@ export class AuthRegisterDto {
   public readonly password: string
 
   @ApiProperty({
-    name: 'referrerId',
-    description: 'Referrer ID',
+    name: 'referralToken',
+    description: 'referral Token',
   })
-  @IsNumber()
-  public readonly referrerId: number
+  @IsString()
+  public referralToken: string
+
+  public toUser (): User {
+    const { referralToken, ...params} = this
+
+    return Object.assign(new User(), params)
+  }
 }

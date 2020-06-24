@@ -40,9 +40,12 @@ export class AuthController {
   public async register(@Body() params: AuthRegisterDto): Promise<any> {
     try {
       const user = await this.authService.register(params)
-      this.authService.processReferral(user)
 
-      return this.authService.login(user)
+      if (params.referralToken && user) {
+        await this.authService.processReferral(user, params.referralToken)
+      }
+
+      return await this.authService.login(user)
     } catch (e) {
       throw new BadRequestException(e.message)
     }    

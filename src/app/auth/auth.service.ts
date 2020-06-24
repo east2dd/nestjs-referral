@@ -28,7 +28,7 @@ export class AuthService {
     return await new AuthLoginService(this.jwtService).call(user)
   }
 
-  public async processReferral(user: User): Promise<boolean> {
-    return await new AuthProcessReferralService(this.userRepository).call(user)
+  public async processReferral(user: User, referralToken: string): Promise<boolean> {
+    return await new AuthProcessReferralService(this.userRepository).call(user, referralToken)
   }
 }

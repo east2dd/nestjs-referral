@@ -20,6 +20,6 @@ export class UserReferralLinkController {
   @Get('referral-link')
   @ApiOperation({ description: 'Get user referral link' })
   public async referralLink(@Req() req: Request) {
-    return await this.userService.getReferralUrl(req.user.id)
+    return await this.userService.getReferralToken(req.user.id)
   }
 }
