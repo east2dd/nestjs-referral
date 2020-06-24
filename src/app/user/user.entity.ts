@@ -3,14 +3,10 @@ import { BaseEntity } from '../../common/base-entity';
 
 @Entity({ name: "users" })
 export class User extends BaseEntity{
-  @Column({
-    unique: true
-  })
+  @Column({ unique: true })
   id: number;
 
-  @Column({
-    unique: true
-  })
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -21,4 +17,10 @@ export class User extends BaseEntity{
 
   @Column({ length: 100, nullable: true })
   passwordHash: string;
+
+  @Column({ default: 0 })
+  referralCount: number;
+
+  @Column({ default: 0 })
+  balance: number;
 }

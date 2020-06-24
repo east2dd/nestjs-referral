@@ -45,5 +45,3 @@ export const TYPE_ORM_MODULE_OPTIONS: TypeOrmModuleOptions = Object.assign(
     entities: [path.join(__dirname, '../**', '*.entity{.ts,.js}')],
   }
 )
-
-console.log(TYPE_ORM_MODULE_OPTIONS)
