@@ -19,7 +19,7 @@ export default class AuthLoginService
 
     return Object.assign(new AuthTokenDto(), {
       token: token,
-      uid: user.id,
+      id: user.id,
     })
   }
 }

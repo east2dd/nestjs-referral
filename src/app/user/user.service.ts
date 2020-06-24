@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import { UserUpdateDto } from './dto/user.update.dto';
-import UserUpdateService from './service/user.update.service';
+import { UserReferralLinkDto } from './dto/user.referral-link.dto';
 
 @Injectable()
 export class UserService {
@@ -20,7 +19,12 @@ export class UserService {
     return this.userRepository.findOne({ email: email });
   }
 
-  async update(id: number, params: UserUpdateDto) : Promise<User>{
-    return await new UserUpdateService(this.userRepository).call(id, params);
+  getReferralUrl(id: number): object {
+    const dto = new UserReferralLinkDto()
+    const token = Buffer.from(id.toString()).toString('base64')
+
+    Object.assign(dto, { token })
+
+    return dto
   }
 }

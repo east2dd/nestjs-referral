@@ -106,7 +106,7 @@ describe('AuthController', () => {
     
     const tokenDto = Object.assign(new AuthTokenDto(), {
       token: 'valid-token-123456789',
-      uid: 'user-x',
+      id: 'user-x',
     })
 
     describe('When data is valid', () => {

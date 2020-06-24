@@ -32,7 +32,7 @@ describe('UserController', () => {
     describe('When token is not valid', () => {
       it('should return bad request exception', async ()=>{
         const req: Request = createRequest()
-        req.currentUser = currentUser
+        req.user = currentUser
       })
     })
   })

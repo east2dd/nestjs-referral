@@ -11,9 +11,9 @@ export class AuthTokenDto {
   public readonly token: string;
 
   @ApiProperty({
-    name: 'uid',
+    name: 'id',
     description: 'User ID of the logged in user',
   })
   @IsString()
-  public readonly uid: string;
+  public readonly id: string;
 }

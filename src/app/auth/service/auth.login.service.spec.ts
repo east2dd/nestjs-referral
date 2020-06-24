@@ -14,7 +14,7 @@ describe('AuthLoginService', () => {
 
     const tokenDto = Object.assign(new AuthTokenDto(), {
       token: token,
-      uid: mockUserObject.id,
+      id: mockUserObject.id,
     })
 
     beforeEach( async() => {
