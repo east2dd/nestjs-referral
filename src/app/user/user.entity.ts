@@ -1,4 +1,4 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common/base-entity';
 
 @Entity({ name: "users" })
@@ -23,4 +23,14 @@ export class User extends BaseEntity{
 
   @Column({ default: 0 })
   balance: number;
+
+  @Column({ nullable: true })
+  referrerId: number;
+
+  @ManyToOne(type => User, user => user.referees)
+  @JoinColumn({ name: 'referrer_id' })
+  referrer: User | null
+
+  @OneToMany(type => User, user => user.referrer)
+  referees: User[];
 }

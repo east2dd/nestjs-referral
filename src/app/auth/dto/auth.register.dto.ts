@@ -2,6 +2,7 @@ import {
   IsString,
   IsEmail,
   IsNotEmpty,
+  IsNumber,
 } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
@@ -38,4 +39,11 @@ export class AuthRegisterDto {
   @IsNotEmpty()
   @IsString()
   public readonly password: string
+
+  @ApiProperty({
+    name: 'referrerId',
+    description: 'Referrer ID',
+  })
+  @IsNumber()
+  public readonly referrerId: number
 }

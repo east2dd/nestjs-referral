@@ -19,6 +19,10 @@ export default class AuthRegisterService
   async call(params: AuthRegisterDto): Promise<User> {
     this.ensureUserNotExist(params.email)
 
+    return await this.registerUser(params)
+  }
+
+  protected async registerUser(params: AuthRegisterDto) {
     const { password, ...userParams } = params
     const passwordHash = await this.generatePasswordHash(password)
 
